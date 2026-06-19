@@ -128,7 +128,7 @@
             color: var(--text-pure);
         }
 
-        /* ===== Dropdown (مُصلح بـ visibility بدل display:none) ===== */
+        /* ===== Dropdown ===== */
         .dropdown {
             position: relative;
             padding: 10px 0;
@@ -210,7 +210,7 @@
             background: rgba(255, 255, 255, 0.07);
         }
 
-        /* ===== Hamburger (موبايل) ===== */
+        /* ===== Hamburger ===== */
         .hamburger {
             display: none;
             flex-direction: column;
@@ -416,7 +416,6 @@
         }
 
         @keyframes bounce {
-
             0%,
             100% {
                 transform: translateY(0) translateX(-50%);
@@ -431,7 +430,7 @@
             }
         }
 
-        /* ===== قسم الإحصائيات (جديد) ===== */
+        /* ===== قسم الإحصائيات ===== */
         .stats-section {
             padding: 60px 5%;
             max-width: 1200px;
@@ -631,7 +630,6 @@
             transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease;
         }
 
-        /* تأثير الضوء الداخلي عند hover */
         .glass-mockup::before {
             content: '';
             position: absolute;
@@ -705,7 +703,7 @@
             font-size: 0.88rem;
         }
 
-        /* ===== Scroll To Top (جديد) ===== */
+        /* ===== Scroll To Top ===== */
         .scroll-top {
             position: fixed;
             bottom: 30px;
@@ -752,8 +750,32 @@
             transform: translateY(0);
         }
 
-        /* ===== Responsive ===== */
-        @media (max-width: 992px) {
+        /* ===== Responsive Design ===== */
+        /* Large Screens */
+        @media (max-width: 1440px) {
+            .hero {
+                padding: 140px 5% 80px;
+            }
+
+            .showcase-section {
+                gap: 40px;
+                padding: 90px 5%;
+            }
+        }
+
+        /* Tablets (1024px and below) */
+        @media (max-width: 1024px) {
+            header {
+                top: 15px;
+                width: 90%;
+                padding: 12px 20px;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+                letter-spacing: 1px;
+            }
+
             .nav-links {
                 display: none;
             }
@@ -762,76 +784,509 @@
                 display: flex;
             }
 
+            .hero {
+                padding: 120px 5% 70px;
+            }
+
+            .hero h1 {
+                font-size: clamp(2.5rem, 6vw, 5rem);
+                letter-spacing: -1px;
+            }
+
+            .hero p {
+                font-size: clamp(1rem, 2vw, 1.15rem);
+            }
+
             .stats-section {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+                padding: 50px 5%;
+            }
+
+            .stat-card {
+                padding: 25px 15px;
+            }
+
+            .stat-number {
+                font-size: 2.4rem;
             }
 
             .showcase-section,
             .showcase-section.reverse {
                 flex-direction: column;
                 text-align: center;
-                padding: 80px 5%;
-                gap: 40px;
+                padding: 70px 5%;
+                gap: 35px;
+            }
+
+            .showcase-content h2 {
+                font-size: clamp(1.8rem, 4vw, 2.8rem);
+            }
+
+            .showcase-content p {
+                font-size: 1rem;
             }
 
             .feature-list li {
                 justify-content: center;
+                font-size: 0.95rem;
             }
 
             .bg-text {
-                font-size: 22vw;
-            }
-        }
-
-        @media (max-width: 600px) {
-            header {
-                width: 95%;
-                padding: 10px 15px;
+                font-size: 20vw;
+                opacity: 0.01;
             }
 
             .glass-mockup {
-                border-radius: 28px;
+                max-width: 380px;
+            }
+
+            .glass-mockup i {
+                font-size: 6.5rem;
+            }
+
+            .btn {
+                padding: 16px 40px;
+                font-size: 0.95rem;
+            }
+
+            .btn-group {
+                gap: 12px;
+            }
+        }
+
+        /* Small Tablets & Large Phones (768px) */
+        @media (max-width: 768px) {
+            header {
+                top: 10px;
+                width: 93%;
+                padding: 10px 18px;
+            }
+
+            .header-actions {
+                gap: 10px;
+            }
+
+            .btn-small {
+                padding: 9px 18px;
+                font-size: 0.85rem;
+                font-weight: 600;
+            }
+
+            .hero {
+                padding: 100px 5% 60px;
+                min-height: 95vh;
+            }
+
+            .hero-badge {
+                padding: 7px 20px;
+                font-size: 0.8rem;
+                margin-bottom: 20px;
+            }
+
+            .hero h1 {
+                font-size: clamp(2rem, 5.5vw, 4rem);
+                margin-bottom: 18px;
+                letter-spacing: -0.5px;
+            }
+
+            .hero p {
+                font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+                margin-bottom: 35px;
+                max-width: 600px;
+            }
+
+            .btn {
+                padding: 14px 32px;
+                font-size: 0.9rem;
+                gap: 8px;
+            }
+
+            .btn i {
+                font-size: 0.95rem;
+            }
+
+            .btn-group {
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .scroll-indicator {
+                bottom: 30px;
+                font-size: 1.2rem;
+            }
+
+            .stats-section {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+                padding: 40px 5%;
+            }
+
+            .stat-card {
+                padding: 20px 12px;
+                border-radius: 18px;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+                margin-bottom: 6px;
+            }
+
+            .stat-label {
+                font-size: 0.85rem;
+            }
+
+            .showcase-section,
+            .showcase-section.reverse {
+                padding: 60px 5%;
+                gap: 30px;
+            }
+
+            .showcase-content {
+                z-index: 2;
+            }
+
+            .showcase-content h2 {
+                font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+                margin-bottom: 15px;
+            }
+
+            .showcase-content p {
+                font-size: 0.95rem;
+                margin-bottom: 20px;
+                line-height: 1.75;
+            }
+
+            .feature-list {
+                margin-bottom: 25px;
+            }
+
+            .feature-list li {
+                font-size: 0.9rem;
+                margin-bottom: 10px;
+                gap: 10px;
+            }
+
+            .feature-list li i {
+                padding: 7px;
+                min-width: 32px;
+                font-size: 0.95rem;
+            }
+
+            .glass-mockup {
+                max-width: 320px;
+                border-radius: 32px;
             }
 
             .glass-mockup i {
                 font-size: 5.5rem;
             }
 
-            .stats-section {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 14px;
+            .bg-text {
+                font-size: 18vw;
             }
 
-            .stat-number {
-                font-size: 2.2rem;
+            footer {
+                padding: 60px 5% 30px;
+                gap: 25px;
             }
 
-            .btn {
-                padding: 15px 30px;
-                font-size: 1rem;
+            .footer-logo {
+                font-size: 1.3rem;
+                letter-spacing: 1px;
+            }
+
+            .footer-links-row {
+                gap: 20px;
+                font-size: 0.95rem;
+            }
+
+            .footer-copy {
+                font-size: 0.8rem;
             }
 
             .scroll-top {
                 bottom: 20px;
                 left: 20px;
+                width: 42px;
+                height: 42px;
+                font-size: 0.9rem;
             }
         }
-        .system-status{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    font-size:0.85rem;
-    color:#fff;
-    margin-right:15px;
-}
 
-.status-dot{
-    width:8px;
-    height:8px;
-    border-radius:50%;
-    background:#00ff88;
-    box-shadow:0 0 10px #00ff88;
-}
+        /* Small Phones (480px) */
+        @media (max-width: 480px) {
+            :root {
+                --radius-pill: 80px;
+                --radius-card: 18px;
+            }
+
+            header {
+                width: 95%;
+                padding: 9px 14px;
+                border-radius: 60px;
+            }
+
+            header.scrolled {
+                width: 92%;
+                padding: 7px 12px;
+            }
+
+            .logo {
+                font-size: 1rem;
+                gap: 6px;
+                letter-spacing: 1px;
+            }
+
+            .logo i {
+                font-size: 0.9rem;
+            }
+
+            .btn-small {
+                padding: 8px 16px;
+                font-size: 0.8rem;
+                font-weight: 600;
+                border-radius: 50px;
+            }
+
+            .hero {
+                padding: 90px 5% 50px;
+                min-height: 90vh;
+            }
+
+            .hero-glow {
+                width: 80vw;
+                height: 80vw;
+                top: 15%;
+            }
+
+            .hero-badge {
+                padding: 6px 16px;
+                font-size: 0.75rem;
+                letter-spacing: 1px;
+                margin-bottom: 15px;
+                border-radius: 50px;
+            }
+
+            .hero h1 {
+                font-size: clamp(1.8rem, 5vw, 3rem);
+                margin-bottom: 14px;
+                letter-spacing: -0.5px;
+                line-height: 1.1;
+            }
+
+            .hero p {
+                font-size: clamp(0.9rem, 1.6vw, 0.95rem);
+                margin-bottom: 25px;
+                line-height: 1.7;
+            }
+
+            .btn {
+                padding: 12px 24px;
+                font-size: 0.85rem;
+                font-weight: 700;
+                gap: 6px;
+                border-radius: 50px;
+            }
+
+            .btn i {
+                font-size: 0.85rem;
+            }
+
+            .btn-group {
+                gap: 8px;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .scroll-indicator {
+                bottom: 25px;
+                font-size: 1rem;
+            }
+
+            .stats-section {
+                grid-template-columns: 1fr;
+                gap: 12px;
+                padding: 35px 5%;
+            }
+
+            .stat-card {
+                padding: 18px 10px;
+                border-radius: 14px;
+            }
+
+            .stat-number {
+                font-size: 1.8rem;
+                margin-bottom: 4px;
+            }
+
+            .stat-label {
+                font-size: 0.8rem;
+                font-weight: 500;
+            }
+
+            .showcase-wrapper {
+                padding: 30px 0;
+            }
+
+            .showcase-section,
+            .showcase-section.reverse {
+                padding: 50px 5%;
+                gap: 25px;
+            }
+
+            .showcase-content {
+                z-index: 2;
+            }
+
+            .showcase-content h2 {
+                font-size: clamp(1.3rem, 3vw, 2rem);
+                margin-bottom: 12px;
+            }
+
+            .showcase-content p {
+                font-size: 0.9rem;
+                margin-bottom: 18px;
+                line-height: 1.65;
+            }
+
+            .feature-list {
+                margin-bottom: 20px;
+            }
+
+            .feature-list li {
+                font-size: 0.85rem;
+                margin-bottom: 8px;
+                gap: 8px;
+            }
+
+            .feature-list li i {
+                padding: 6px;
+                min-width: 28px;
+                font-size: 0.8rem;
+            }
+
+            .glass-mockup {
+                max-width: 280px;
+                border-radius: 26px;
+            }
+
+            .glass-mockup i {
+                font-size: 4.5rem;
+            }
+
+            .bg-text {
+                font-size: 16vw;
+                opacity: 0.009;
+            }
+
+            .glow-protect,
+            .glow-connect,
+            .glow-ban,
+            .glow-download,
+            .glow-donate {
+                width: 60vw;
+                height: 60vw;
+                filter: blur(60px);
+            }
+
+            footer {
+                padding: 50px 5% 25px;
+                gap: 20px;
+            }
+
+            .footer-logo {
+                font-size: 1.1rem;
+                letter-spacing: 1px;
+            }
+
+            .footer-links-row {
+                gap: 12px;
+                font-size: 0.85rem;
+            }
+
+            .footer-copy {
+                font-size: 0.75rem;
+            }
+
+            .scroll-top {
+                bottom: 15px;
+                left: 15px;
+                width: 38px;
+                height: 38px;
+                font-size: 0.8rem;
+            }
+
+            .mobile-menu {
+                gap: 6px;
+            }
+
+            .mobile-menu a {
+                font-size: 1.2rem;
+                padding: 12px 30px;
+                border-radius: 14px;
+                max-width: 280px;
+            }
+
+            .mobile-menu-divider {
+                margin: 8px 0;
+            }
+        }
+
+        /* Extra Small Phones (360px) */
+        @media (max-width: 360px) {
+            .hero h1 {
+                font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+            }
+
+            .hero p {
+                font-size: 0.85rem;
+            }
+
+            .showcase-section,
+            .showcase-section.reverse {
+                padding: 45px 4%;
+                gap: 20px;
+            }
+
+            .showcase-content h2 {
+                font-size: clamp(1.2rem, 2.8vw, 1.8rem);
+            }
+
+            .glass-mockup {
+                max-width: 240px;
+            }
+
+            .glass-mockup i {
+                font-size: 4rem;
+            }
+
+            .btn-group {
+                width: 100%;
+            }
+
+            .btn {
+                padding: 11px 20px;
+                font-size: 0.8rem;
+            }
+
+            .stats-section {
+                padding: 30px 4%;
+            }
+
+            .stat-number {
+                font-size: 1.6rem;
+            }
+
+            .stat-label {
+                font-size: 0.75rem;
+            }
+        }
     </style>
 </head>
 
@@ -860,7 +1315,7 @@
                 </div>
             </div>
 
-            <a href="https://t.me/Source_Hyper">Update Channel</a>
+            <a href="https://t.me/SourceHyper">Update Channel</a>
         </div>
 
         <div class="header-actions">
@@ -886,7 +1341,7 @@
             Hyper Downloader</a>
         <a href="donate-bot.html" class="mobile-link"><i class="fas fa-gem" style="color:#fbbf24;"></i> Hyper Donate</a>
         <div class="mobile-menu-divider"></div>
-        <a href="https://t.me/Source_Hyper" class="mobile-link"><i class="fab fa-telegram"></i> Update Channel</a>
+        <a href="https://t.me/SourceHyper" class="mobile-link"><i class="fab fa-telegram"></i> Update Channel</a>
         <a href="https://t.me/Hyperssup_Bot?start=start" class="mobile-link"><i class="fas fa-headset"></i> Hyper
             Support</a>
     </nav>
@@ -901,13 +1356,13 @@
             specifically to secure, manage, and grow your Telegram community with absolute professionalism.</p>
         <div class="btn-group">
             <a href="#showcase" class="btn btn-main"><i class="fas fa-layer-group"></i> Explore Bot Library</a>
-            <a href="https://t.me/Source_Hyper" class="btn btn-outline"><i class="fab fa-telegram"></i> Join Official
+            <a href="https://t.me/SourceHyper" class="btn btn-outline"><i class="fab fa-telegram"></i> Join Official
                 Channel</a>
         </div>
         <div class="scroll-indicator"><i class="fas fa-arrow-down"></i></div>
     </section>
 
-    <!-- ===== الإحصائيات (جديد) ===== -->
+    <!-- ===== الإحصائيات ===== -->
 
     <div class="stats-section reveal">
         <div class="stat-card">
@@ -1095,7 +1550,7 @@
         <div class="footer-logo">HYPER SOURCE</div>
 
         <div class="footer-links-row">
-            <a href="https://t.me/Source_Hyper">Updates Channel</a>
+            <a href="https://t.me/SourceHyper">Updates Channel</a>
             <a href="https://t.me/Hyperssup_Bot">Support Bot</a>
             <a href="https://t.me/eaqqs">Owner Source</a>
         </div>
@@ -1105,9 +1560,7 @@
         </div>
     </footer>
 
-
     <!-- ===== زر رجوع لأعلى ===== -->
-
     <a href="#home" class="scroll-top" id="scroll-top" aria-label="رجوع للأعلى">
         <i class="fas fa-arrow-up"></i>
     </a>
@@ -1147,10 +1600,8 @@
                     ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
                     ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
                     ctx.fill();
-                    // حركة بطيئة
                     s.x += Math.cos(s.dir) * s.speed;
                     s.y += Math.sin(s.dir) * s.speed;
-                    // إعادة التوضيع
                     if (s.x < 0) s.x = canvas.width;
                     if (s.x > canvas.width) s.x = 0;
                     if (s.y < 0) s.y = canvas.height;
@@ -1189,7 +1640,6 @@
         hamburger.addEventListener('click', toggleMenu);
         hamburger.addEventListener('keydown', e => e.key === 'Enter' && toggleMenu());
 
-        // إغلاق عند الضغط على أي رابط في المنيو
         document.querySelectorAll('.mobile-link').forEach(link => {
             link.addEventListener('click', () => {
                 hamburger.classList.remove('open');
@@ -1220,7 +1670,6 @@
             function update(now) {
                 const elapsed = now - start;
                 const progress = Math.min(elapsed / duration, 1);
-                // easeOutExpo
                 const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
                 const value = Math.floor(ease * target);
                 el.textContent = value.toLocaleString('ar') + suffix;
