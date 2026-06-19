@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Source Hyper | المنصة التعريفية</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* الهوية البصرية النظيفة والمبسطة (Minimal Tech Identity) */
+        :root {
+            --bg-body: #f8fafc;        /* خلفية ناعمة جداً ومريحة للعين */
+            --bg-surface: #ffffff;     /* أبيض ناصع للبطاقات والهيدر */
+            --text-primary: #0f172a;   /* كحلي داكن فاخر للعناوين */
+            --text-secondary: #475569; /* رمادي متوازن ومريح جداً للقراءة الطويلة */
+            --brand-color: #2563eb;    /* أزرق تقني هادئ */
+            --brand-hover: #1d4ed8;
+            --border-color: #e2e8f0;   /* حدود ناعمة غير حادة */
+            --shadow-soft: 0 20px 40px -15px rgba(15, 23, 42, 0.04); /* ظل هندسي خفيف */
+            --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.03);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            background-color: var(--bg-body);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ------------------ الهيدر المطور (Premium Header) ------------------ */
+        .main-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px); /* تأثير زجاجي ناعم */
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+
+        .header-container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 18px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.4em;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .logo::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background-color: var(--brand-color);
+            border-radius: 50%;
+        }
+
+        .logo span {
+            color: var(--brand-color);
+            font-weight: 600;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .header-nav a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.95em;
+            transition: color 0.2s ease;
+            position: relative;
+        }
+
+        .header-nav a:hover {
+            color: var(--text-primary);
+        }
+
+        /* أنيميشن خفيف تحت عناصر القائمة عند الحوم */
+        .header-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--brand-color);
+            transition: width 0.2s ease;
+        }
+
+        .header-nav a:hover::after {
+            width: 100%;
+        }
+
+        .btn-small {
+            background-color: #f1f5f9;
+            color: var(--text-primary) !important;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9em;
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-small:hover {
+            background-color: var(--text-primary);
+            color: #ffffff !important;
+            border-color: var(--text-primary);
+        }
+
+        .btn-small::after {
+            display: none !important;
+        }
+
+        /* ------------------ الحاوية الرئيسية ------------------ */
+        main {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 40px 24px 100px 24px;
+        }
+
+        /* ------------------ المقدمة الهندسية ------------------ */
+        .hero-section {
+            text-align: center;
+            padding: 90px 0 70px 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-section h1 {
+            font-size: 3em;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            line-height: 1.3;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-section .lead-text {
+            font-size: 1.2em;
+            font-weight: 400;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* ------------------ عرض الميديا المريح ------------------ */
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 960px;
+            margin: 0 auto 100px auto;
+            aspect-ratio: 16 / 9;
+            background-color: var(--bg-surface);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--border-color);
+        }
+
+        .video-wrapper video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* ------------------ العناوين الفرعية ------------------ */
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            color: var(--text-primary);
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.3px;
+        }
+
+        .section-header p {
+            font-size: 1.05em;
+            color: var(--text-secondary);
+        }
+
+        /* ------------------ روقان البطاقات (Premium Cards) ------------------ */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 100px;
+        }
+
+        .card {
+            background: var(--bg-surface);
+            padding: 45px 40px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* تأثير التفاعل الناعم للبطاقات */
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: #cbd5e1;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .card .icon-box {
+            width: 48px;
+            height: 48px;
+            background-color: #eff6ff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4em;
+            margin-bottom: 8px;
+        }
+
+        .card h3 {
+            color: var(--text-primary);
+            font-size: 1.35em;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+        }
+
+        .card p {
+            font-size: 0.98em;
+            line-height: 1.75;
+            color: var(--text-secondary);
+        }
+
+        /* ------------------ مجموعات التقنيات النظيفة ------------------ */
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 14px;
+            margin-bottom: 100px;
+        }
+
+        .tech-badge {
+            background: var(--bg-surface);
+            color: var(--text-primary);
+            padding: 10px 24px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            font-weight: 600;
+            font-size: 0.95em;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
+        }
+
+        .tech-badge:hover {
+            border-color: var(--brand-color);
+            background-color: #f8fafc;
+        }
+
+        /* ------------------ شاشة المؤشرات والأرقام ------------------ */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+            text-align: center;
+            margin-bottom: 100px;
+        }
+
+        .stat-box {
+            padding: 35px 20px;
+            background: var(--bg-surface);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stat-box h3 {
+            font-size: 2.6em;
+            color: var(--brand-color);
+            font-weight: 800;
+            margin-bottom: 4px;
+            letter-spacing: -1px;
+        }
+
+        .stat-box p {
+            font-size: 0.95em;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        /* ------------------ قسم التواصل التقني (CTA) ------------------ */
+        .cta-section {
+            background-color: #f1f5f9; 
+            border: 1px solid var(--border-color);
+            padding: 70px 40px;
+            border-radius: 24px;
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            color: var(--text-primary);
+            font-size: 2em;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .cta-section p {
+            font-size: 1.05em;
+            margin-bottom: 32px;
+            max-width: 550px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1em;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--text-primary);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: #1e293b;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background-color: var(--bg-surface);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-outline:hover {
+            background-color: #f8fafc;
+            border-color: var(--text-primary);
+        }
+
+        /* ------------------ الفوتر السفلي ------------------ */
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            border-top: 1px solid var(--border-color);
+            background-color: var(--bg-surface);
+        }
+
+        @media (max-width: 768px) {
+            .hero-section h1 { font-size: 2.2em; }
+            .section-header h2 { font-size: 1.6em; }
+            .btn { width: 100%; }
+            .header-nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="header-container">
+            <a href="#" class="logo">Source <span>Hyper</span></a>
+            <nav class="header-nav">
+                <a href="#features">المميزات</a>
+                <a href="#tech">البيئة البرمجية</a>
+                <a href="#stats">المؤشرات</a>
+                <a href="mailto:sourcehyper67@gmail.com" class="btn-small">الاستفسارات الفنية</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <h1>بنية برمجية متكاملة للمشاريع عالية الأداء.</h1>
+            <p class="lead-text">توثيق شامل واستعراض تفصيلي للهندسة الخلفية والتقنيات الأساسية التي يعتمد عليها نظام سورس هايبر لضمان الاستقرار الكلي والاستجابة اللحظية.</p>
+        </section>
+
+        <section class="video-wrapper">
+            <video 
+                src="https://d.uguu.se/XDKinbAq.mp4" 
+                autoplay 
+                loop 
+                muted 
+                playsinline>
+            </video>
+        </section>
+
+        <section id="features">
+            <div class="section-header">
+                <h2>المواصفات والخصائص البرمجيه</h2>
+                <p>تحليل لأبرز الركائز البرمجية التي يرتكز عليها النظام لإدارة العمليات المعقدة.</p>
+            </div>
+            
+            <div class="grid-layout">
+                <div class="card">
+                    <div class="icon-box">🛡️</div>
+                    <h3>الحماية وهيكلة الأمان</h3>
+                    <p>يعتمد النظام على جدار حماية برمجي متكامل يفحص المدخلات لمنع هجمات الحقن، مع تطبيق بروتوكولات تشفير صارمة لحماية البيانات الحساسة.</p>
+                </div>
+                <div class="card">
+                    <div class="icon-box">⚡</div>
+                    <h3>جدولة واستهلاك الموارد</h3>
+                    <p>خوارزميات متطورة لتحسين استهلاك الذاكرة العشوائية والمعالج، مما يحافظ على ثبات استجابة الخادم عند ذروة الاتصالات المتزامنة.</p>
+                </div>
+                <div class="card">
+                    <div class="icon-box">📝</div>
+                    <h3>التوثيق وقابلية التوسع</h3>
+                    <p>هيكلة الكود تتبع معايير النظافة البرمجية (Clean Code) ومرفقة بشرح كامل، لتسهيل عمليات التطوير المستقبلية وربط الأنظمة الخارجية.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="tech">
+            <div class="section-header">
+                <h2>البيئة البرمجية المدعومة</h2>
+            </div>
+            <div class="tech-stack">
+                <div class="tech-badge">C++ / C# Core</div>
+                <div class="tech-badge">PHP 8.x Engine</div>
+                <div class="tech-badge">Golang Microservices</div>
+                <div class="tech-badge">Flutter SDK</div>
+                <div class="tech-badge">High-Performance SQL / Redis</div>
+            </div>
+        </section>
+
+        <section id="stats">
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <h3>99.9%</h3>
+                    <p>معدل استقرار الاتصال بالخادم</p>
+                </div>
+                <div class="stat-box">
+                    <h3>+5000</h3>
+                    <p>سطر برمي معالج ومراجع دورياً</p>
+                </div>
+                <div class="stat-box">
+                    <h3>0 MS</h3>
+                    <p>زمن التأخير في معالجة الطلبات الداخلية</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <h2>الاستفسارات والنقاشات الفنية</h2>
+            <p>إذا كنت بحاجة إلى تفاصيل هندسية إضافية أو مراجعة المعمارية البرمجية، يسعدنا تواصلك مع الفريق المطور.</p>
+            <div class="btn-group">
+                <a href="https://t.me/SourceHyper" target="_blank" class="btn btn-primary">سورس هايبر الرسمي</a>
+                <a href="mailto:sourcehyper67@gmail.com" class="btn btn-outline">التواصل الرسمي عبر الإيميل</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Source Hyper Core Architecture &copy; 2026. موثق ومحفوظ بكافة المعايير البرمجية المعترف بها.</p>
+    </footer>
+
+</body>
+</html>
