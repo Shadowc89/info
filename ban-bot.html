@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="ban.jpg">
+    <meta name="description"
+        content="HYPER BAN - أقوى بوت حظر وتقييد لمنع الإزعاج، الروابط، والمخربين في مجموعات تيليجرام.">
+    <title>HYPER BAN | بوت الحظر الذكي</title>
+    <!-- خط Cairo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <!-- أيقونات FontAwesome -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* --- المتغيرات الأساسية (Cyber Purple Theme) --- */
+        :root {
+            --bg-base: #05030a;
+            /* أسود عميق يميل للبنفسجي */
+            --bg-surface: #0b0716;
+            --primary-purple: #55f760;
+            /* بنفسجي فخم */
+            --primary-glow: rgba(85, 247, 99, 0.25);
+            --glass-bg: rgba(20, 15, 30, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.06);
+            --text-pure: #ffffff;
+            --text-muted: #9ca3af;
+            --radius-xl: 32px;
+            --radius-md: 16px;
+            --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-pure);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- خلفية شبكية متحركة (Grid Background) --- */
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image:
+                linear-gradient(var(--glass-border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--glass-border) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.3;
+            z-index: -3;
+            pointer-events: none;
+            will-change: transform;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(50px);
+            }
+        }
+
+        /* إضاءة مركزية بنفسجية خافتة */
+        .core-glow {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80vw;
+            height: 60vh;
+            background: radial-gradient(ellipse at top, var(--primary-glow) 0%, transparent 60%);
+            z-index: -2;
+            filter: blur(80px);
+            pointer-events: none;
+            contain: layout style paint;
+        }
+
+        /* --- الهيدر (Navbar) --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 5%;
+            background: rgba(5, 3, 10, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--text-pure);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: 1px;
+        }
+
+        .logo i {
+            color: var(--primary-purple);
+            font-size: 1.8rem;
+        }
+
+        .btn-back {
+            color: var(--text-muted);
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition-smooth);
+            font-size: 0.95rem;
+            border: 1px solid transparent;
+            padding: 8px 16px;
+            border-radius: 50px;
+        }
+
+        .btn-back:hover {
+            color: var(--text-pure);
+            gap: 12px;
+            border-color: var(--glass-border);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* --- القسم الرئيسي (Hero Section) --- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 150px 5% 80px;
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .status-badge {
+            background: rgba(96, 247, 85, 0.1);
+            border: 1px solid rgba(85, 247, 88, 0.3);
+            color: #b4febf;
+            padding: 6px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .status-badge i {
+            font-size: 0.6rem;
+            color: var(--primary-purple);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.4;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.4;
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            background: linear-gradient(180deg, #ffffff 0%, #d5ffda 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -2px;
+        }
+
+        .hero p {
+            font-size: clamp(1.1rem, 2vw, 1.3rem);
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            max-width: 700px;
+            line-height: 1.8;
+            font-weight: 400;
+        }
+
+        /* زر التفعيل الرئيسي */
+        .btn-action {
+            padding: 20px 50px;
+            font-size: 1.15rem;
+            font-weight: 800;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: var(--transition-smooth);
+            background: linear-gradient(135deg, var(--primary-purple) 0%, #22ce36 100%);
+            color: white;
+            box-shadow: 0 10px 40px var(--primary-glow);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            letter-spacing: 1px;
+        }
+
+        .btn-action {
+            will-change: transform, box-shadow;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(85, 247, 93, 0.5);
+            background: linear-gradient(135deg, #4cfc6c 0%, #21a835 100%);
+        }
+
+        /* --- قسم الإمكانيات (Capabilities Grid) --- */
+        .capabilities {
+            padding: 100px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .section-title h2 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 50px 40px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            transition: var(--transition-smooth);
+            contain: layout style paint;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--primary-purple), transparent);
+            opacity: 0;
+            transition: 0.4s ease;
+        }
+
+        .feature-card {
+            will-change: transform;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(96, 247, 85, 0.3);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .icon-wrapper {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            background: rgba(85, 247, 93, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+            border: 1px solid rgba(85, 247, 96, 0.2);
+        }
+
+        .icon-wrapper i {
+            font-size: 2rem;
+            color: var(--primary-purple);
+        }
+
+        .feature-card h3 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        /* --- قسم حصري لأدوات الحظر (Advanced Ban Features) --- */
+        .environments {
+            padding: 80px 5% 120px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .env-card {
+            background: linear-gradient(145deg, rgba(15, 10, 25, 0.8) 0%, rgba(5, 3, 10, 0.9) 100%);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 50px;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            contain: layout style paint;
+        }
+
+        .env-card.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .env-icon {
+            font-size: 6rem;
+            color: rgba(255, 255, 255, 0.05);
+            text-shadow: 0 0 30px var(--primary-glow);
+        }
+
+        .env-content h3 {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .env-content p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .env-list {
+            list-style: none;
+        }
+
+        .env-list li {
+            margin-bottom: 10px;
+            color: var(--text-pure);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .env-list li i {
+            color: var(--primary-purple);
+            font-size: 0.9rem;
+        }
+
+        /* --- الفوتر --- */
+        footer {
+            padding: 60px 5% 40px;
+            border-top: 1px solid var(--glass-border);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            background: linear-gradient(to top, #000, transparent);
+        }
+
+        footer strong {
+            color: var(--text-pure);
+            font-weight: 700;
+        }
+
+        /* --- أنيميشن الظهور --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            will-change: opacity, transform;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- استجابة الشاشات --- */
+        @media (max-width: 900px) {
+
+            .env-card,
+            .env-card.reverse {
+                flex-direction: column;
+                text-align: center;
+                gap: 30px;
+                padding: 40px 20px;
+            }
+
+            .env-content h3 {
+                justify-content: center;
+            }
+
+            .env-list li {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .btn-action {
+                width: 100%;
+                min-width: unset;
+                font-size: 1rem;
+                padding: 16px 20px;
+            }
+
+            header {
+                padding: 15px 20px;
+            }
+
+            .logo {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- الخلفيات -->
+    <div class="cyber-grid"></div>
+    <div class="core-glow"></div>
+
+    <!-- الهيدر -->
+    <header>
+        <a href="index.html" class="logo">
+            <i class="fas fa-ban"></i> HYPER BAN
+        </a>
+        <a href="index.html" class="btn-back">
+            Platform <i class="fas fa-arrow-left" style="font-size: 0.8rem;"></i>
+        </a>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero reveal">
+        <div class="status-badge">
+            <i class="fas fa-circle"></i> The strict judge of your groups
+        </div>
+
+        <h1>Absolute Control Over Your Community</h1>
+
+        <p>
+            Don’t let disruptive users ruin your channels and groups. HYPER BAN is your most powerful tool for enforcing
+            rules, filtering offensive words, and blocking spam and links with fast and decisive ban and restriction
+            actions.
+        </p>
+
+        <a href="https://t.me/PPOY6_BOT?start=start" class="btn-action">
+            Activate Ban Bot Now
+        </a>
+    </section>
+
+    <!-- Capabilities Section -->
+    <section class="capabilities">
+        <div class="section-title reveal">
+            <h2>Integrated Enforcement Arsenal</h2>
+            <p>Tools designed specifically to eliminate spam and maintain order intelligently.</p>
+        </div>
+
+        <div class="grid-container">
+
+            <!-- Card 1 -->
+            <div class="feature-card reveal">
+                <div class="icon-wrapper"><i class="fas fa-link-slash"></i></div>
+                <h3>Link & Spam Radar</h3>
+                <p>Automatically removes external links, forwards, and promotional spam messages instantly to keep your
+                    group clean and focused.</p>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="feature-card reveal" style="transition-delay: 0.1s;">
+                <div class="icon-wrapper"><i class="fas fa-comment-slash"></i></div>
+                <h3>Smart Mute System</h3>
+                <p>Instead of permanent bans, you can mute disruptive users for a specific time until they follow the
+                    group rules.</p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="feature-card reveal" style="transition-delay: 0.2s;">
+                <div class="icon-wrapper"><i class="fas fa-globe"></i></div>
+                <h3>Global Ban System</h3>
+                <p>If a user is banned from one of your groups, the bot can automatically ban them across all your
+                    connected groups instantly.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Environment Section -->
+    <section class="environments">
+        <div class="section-title reveal">
+            <h2>Steel Shield Against Disruptors</h2>
+        </div>
+
+        <!-- Automation -->
+        <div class="env-card reveal">
+            <i class="fas fa-robot env-icon"></i>
+            <div class="env-content">
+                <h3>
+                    <i class="fas fa-hammer" style="color: var(--text-silver); font-size: 1.5rem;"></i>
+                    Automated Moderation
+                </h3>
+
+                <p>You don’t need to be online all the time. The bot acts as an AI moderator that enforces your rules
+                    based on your settings.</p>
+
+                <ul class="env-list">
+                    <li><i class="fas fa-check"></i> Progressive warning system (Warn > Mute > Ban).</li>
+                    <li><i class="fas fa-check"></i> Automatic filtering of offensive and banned words.</li>
+                    <li><i class="fas fa-check"></i> Night mode chat lockdown system.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Media Protection -->
+        <div class="env-card reverse reveal">
+            <i class="fas fa-photo-film env-icon"></i>
+            <div class="env-content">
+                <h3>
+                    <i class="fas fa-shield-virus" style="color: var(--text-silver); font-size: 1.5rem;"></i>
+                    Content Filtering System
+                </h3>
+
+                <p>Control the type of content shared inside your group to prevent chaos and spam.</p>
+
+                <ul class="env-list">
+                    <li><i class="fas fa-check"></i> Block images, videos, and stickers.</li>
+                    <li><i class="fas fa-check"></i> Restrict new members from posting immediately after joining.</li>
+                    <li><i class="fas fa-check"></i> Instant removal of advertising bots.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Designed & Developed by <strong>HYPER SOURCE</strong>. All rights reserved.</p>
+    </footer>
+
+
+    <!-- سكربتات الانسيابية -->
+    <script>
+        let ticking = false;
+        const observerOptions = { root: null, rootMargin: '50px', threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (!ticking) {
+                        window.requestAnimationFrame(() => {
+                            entry.target.classList.add('active');
+                            observer.unobserve(entry.target);
+                            ticking = false;
+                        });
+                        ticking = true;
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach((el) => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="donate.jpg">
+    <meta name="description" content="HYPER DONATE - ادعم مشروع HYPER SOURCE وساهم في استمرارية تطوير البوتات وتغطية تكاليف الخوادم.">
+    <title>HYPER DONATE | بوت التبرعات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* ===== المتغيرات ===== */
+        :root {
+            --bg-base: #0a0904;
+            --primary-gold: #f59e0b;
+            --primary-glow: rgba(245, 158, 11, 0.22);
+            --glass-bg: rgba(30, 25, 10, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.06);
+            --text-pure: #ffffff;
+            --text-muted: #9ca3af;
+            --radius-xl: 28px;
+            --ease: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Cairo',sans-serif; -webkit-font-smoothing:antialiased; }
+
+        body { background-color:var(--bg-base); color:var(--text-pure); line-height:1.6; overflow-x:hidden; }
+        html { scroll-behavior: smooth; }
+
+        /* ===== خلفية Grid ===== */
+        .cyber-grid {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--glass-border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--glass-border) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.2;
+            z-index: -3;
+            pointer-events: none;
+            transform: perspective(600px) rotateX(55deg) translateY(-80px);
+            animation: gridMove 25s linear infinite;
+        }
+
+        @keyframes gridMove {
+            from { background-position: 0 0; }
+            to   { background-position: 0 50px; }
+        }
+
+        .core-glow {
+            position: fixed;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 75vw;
+            height: 55vh;
+            background: radial-gradient(ellipse at top, var(--primary-glow) 0%, transparent 65%);
+            z-index: -2;
+            filter: blur(90px);
+            pointer-events: none;
+        }
+
+        /* ===== Particles ===== */
+        #particles-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* ===== الهيدر ===== */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 18px 5%;
+            background: rgba(10, 9, 4, 0.75);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: padding 0.4s var(--ease), background 0.4s ease;
+        }
+
+        header.scrolled { padding: 12px 5%; background: rgba(10,9,4,0.95); }
+
+        .logo {
+            font-size: 1.45rem;
+            font-weight: 900;
+            color: var(--text-pure);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: 1px;
+        }
+
+        .logo i { color: var(--primary-gold); font-size: 1.7rem; }
+
+        .btn-back {
+            color: var(--text-muted);
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.35s var(--ease);
+            font-size: 0.95rem;
+            border: 1px solid transparent;
+            padding: 9px 18px;
+            border-radius: 50px;
+        }
+
+        .btn-back:hover {
+            color: var(--text-pure);
+            border-color: var(--glass-border);
+            background: rgba(255,255,255,0.03);
+            gap: 14px;
+        }
+
+        /* ===== Hero ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 160px 5% 80px;
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .status-badge {
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.28);
+            color: #fcd34d;
+            padding: 7px 22px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 32px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 0 25px var(--primary-glow);
+        }
+
+        .status-badge .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary-gold);
+            animation: pulse 2s infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes pulse {
+            0%,100% { opacity:0.4; transform:scale(0.9); }
+            50%      { opacity:1;   transform:scale(1.2); box-shadow:0 0 8px var(--primary-gold); }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            font-weight: 900;
+            line-height: 1.08;
+            margin-bottom: 22px;
+            background: linear-gradient(160deg, #ffffff 20%, #fef3c7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -2px;
+            min-height: 1.2em;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            background: var(--primary-gold);
+            animation: blink 0.9s steps(1) infinite;
+            border-radius: 2px;
+            margin-right: 4px;
+            height: 0.85em;
+            vertical-align: middle;
+        }
+
+        @keyframes blink { 0%,49%{opacity:1;} 50%,100%{opacity:0;} }
+
+        .hero p {
+            font-size: clamp(1.05rem, 2vw, 1.25rem);
+            color: var(--text-muted);
+            margin-bottom: 44px;
+            max-width: 680px;
+            line-height: 1.85;
+        }
+
+        .hero-btns { display:flex; gap:16px; flex-wrap:wrap; justify-content:center; }
+
+        .btn-action {
+            padding: 18px 46px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.5s var(--ease);
+            background: linear-gradient(135deg, var(--primary-gold) 0%, #b45309 100%);
+            color: white;
+            box-shadow: 0 10px 40px var(--primary-glow);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .btn-action:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(245,158,11,0.5);
+        }
+
+        .btn-secondary {
+            padding: 18px 36px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.5s var(--ease);
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--glass-border);
+        }
+
+        .btn-secondary:hover {
+            border-color: rgba(245,158,11,0.3);
+            color: var(--text-pure);
+            background: rgba(245,158,11,0.05);
+            transform: translateY(-3px);
+        }
+
+        /* ===== Stats Pills ===== */
+        .stats-row {
+            display: flex;
+            gap: 18px;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 0 5% 80px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .stat-pill {
+            background: rgba(245,158,11,0.06);
+            border: 1px solid rgba(245,158,11,0.14);
+            border-radius: 50px;
+            padding: 14px 26px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.4s var(--ease);
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-pill:hover {
+            border-color: rgba(245,158,11,0.32);
+            background: rgba(245,158,11,0.1);
+            transform: translateY(-3px);
+        }
+
+        .stat-pill i { color: var(--primary-gold); font-size: 1.1rem; }
+        .stat-pill .val { font-size: 1.25rem; font-weight: 900; color: var(--text-pure); }
+        .stat-pill .lbl { font-size: 0.82rem; color: var(--text-muted); font-weight: 600; }
+
+        /* ===== Capabilities ===== */
+        .capabilities { padding:80px 5%; max-width:1200px; margin:0 auto; }
+
+        .section-title { text-align:center; margin-bottom:65px; }
+        .section-title h2 { font-size:clamp(2rem,4vw,2.8rem); font-weight:900; margin-bottom:14px; }
+        .section-title p  { color:var(--text-muted); font-size:1.1rem; }
+
+        .grid-container { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px; }
+
+        .feature-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 44px 36px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            transition: all 0.5s var(--ease);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary-gold), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: -60%; left: 50%;
+            transform: translateX(-50%);
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(245,158,11,0.07) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        .feature-card:hover { transform:translateY(-10px); border-color:rgba(245,158,11,0.25); box-shadow:0 25px 60px rgba(0,0,0,0.7); }
+        .feature-card:hover::before { opacity:1; }
+        .feature-card:hover::after  { opacity:1; }
+
+        .icon-wrapper {
+            width: 68px; height: 68px;
+            border-radius: 20px;
+            background: rgba(245,158,11,0.09);
+            display: flex; justify-content:center; align-items:center;
+            margin-bottom: 28px;
+            border: 1px solid rgba(245,158,11,0.18);
+            transition: all 0.4s var(--ease);
+        }
+
+        .feature-card:hover .icon-wrapper {
+            background: rgba(245,158,11,0.15);
+            border-color: rgba(245,158,11,0.35);
+            transform: scale(1.08);
+        }
+
+        .icon-wrapper i { font-size:1.9rem; color:var(--primary-gold); }
+
+        .card-badge {
+            position: absolute;
+            top: 20px; left: 20px;
+            background: rgba(245,158,11,0.1);
+            border: 1px solid rgba(245,158,11,0.2);
+            color: #fcd34d;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 50px;
+            letter-spacing: 1px;
+        }
+
+        .feature-card h3 { font-size:1.5rem; font-weight:800; margin-bottom:12px; }
+        .feature-card p  { color:var(--text-muted); font-size:1rem; line-height:1.75; }
+
+        /* ===== Donation Tiers (جديد) ===== */
+        .tiers-section {
+            padding: 40px 5% 80px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .tiers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 22px;
+            margin-top: 60px;
+        }
+
+        .tier-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 38px 30px;
+            text-align: center;
+            transition: all 0.5s var(--ease);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+        }
+
+        .tier-card.featured {
+            border-color: rgba(245,158,11,0.35);
+            background: rgba(245,158,11,0.05);
+            box-shadow: 0 0 40px rgba(245,158,11,0.1);
+        }
+
+        .tier-card.featured::before {
+            content: 'الأكثر شيوعاً';
+            position: absolute;
+            top: 16px; left: 50%; transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--primary-gold), #b45309);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 4px 16px;
+            border-radius: 50px;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        .tier-card:hover { transform: translateY(-8px); box-shadow: 0 30px 60px rgba(0,0,0,0.6); border-color: rgba(245,158,11,0.2); }
+
+        .tier-icon { font-size: 2.8rem; margin-bottom: 16px; }
+        .tier-name { font-size: 1.2rem; font-weight: 800; margin-bottom: 8px; color: var(--text-pure); }
+        .tier-amount { font-size: 2.2rem; font-weight: 900; color: var(--primary-gold); margin-bottom: 20px; line-height: 1; }
+        .tier-amount span { font-size: 1rem; color: var(--text-muted); font-weight: 600; }
+
+        .tier-perks { list-style: none; text-align: right; }
+        .tier-perks li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            font-weight: 600;
+            margin-bottom: 9px;
+        }
+        .tier-perks li i { color: var(--primary-gold); font-size: 0.8rem; flex-shrink: 0; }
+        .tier-perks li.highlight { color: var(--text-pure); }
+
+        /* ===== Environments ===== */
+        .environments { padding:60px 5% 80px; max-width:1000px; margin:0 auto; }
+
+        .env-card {
+            background: linear-gradient(145deg, rgba(30,25,10,0.75) 0%, rgba(10,9,4,0.9) 100%);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 50px 45px;
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.45);
+            transition: all 0.5s var(--ease);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .env-card::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 20% 50%, rgba(245,158,11,0.03) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .env-card.reverse { flex-direction: row-reverse; }
+        .env-card.reverse::before { background: radial-gradient(ellipse at 80% 50%, rgba(245,158,11,0.03) 0%, transparent 60%); }
+        .env-card:hover { border-color:rgba(245,158,11,0.16); transform:translateY(-4px); box-shadow:0 40px 70px rgba(0,0,0,0.55); }
+
+        .env-icon {
+            font-size: 5.5rem;
+            color: rgba(245,158,11,0.07);
+            flex-shrink: 0;
+            text-shadow: 0 0 40px var(--primary-glow);
+            transition: color 0.4s ease;
+        }
+
+        .env-card:hover .env-icon { color: rgba(245,158,11,0.13); }
+
+        .env-content h3 { font-size:1.9rem; font-weight:900; margin-bottom:16px; display:flex; align-items:center; gap:14px; }
+        .env-content p  { color:var(--text-muted); font-size:1.05rem; line-height:1.85; margin-bottom:20px; }
+
+        .env-list { list-style: none; }
+        .env-list li {
+            margin-bottom: 10px;
+            color: var(--text-pure);
+            display: flex; align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 0.98rem;
+        }
+        .env-list li i { color: var(--primary-gold); font-size: 0.85rem; }
+
+        /* ===== CTA Section ===== */
+        .cta-section { padding:60px 5% 80px; max-width:900px; margin:0 auto; text-align:center; }
+
+        .cta-box {
+            background: linear-gradient(145deg, rgba(245,158,11,0.07) 0%, rgba(30,25,10,0.6) 100%);
+            border: 1px solid rgba(245,158,11,0.2);
+            border-radius: 36px;
+            padding: 70px 50px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+        }
+
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: 50%;
+            transform: translateX(-50%);
+            width: 500px; height: 300px;
+            background: radial-gradient(ellipse, rgba(245,158,11,0.09) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .cta-box h2 { font-size:clamp(1.8rem,4vw,2.5rem); font-weight:900; margin-bottom:18px; }
+        .cta-box p  { color:var(--text-muted); font-size:1.1rem; margin-bottom:38px; max-width:550px; margin-left:auto; margin-right:auto; }
+
+        /* ===== Footer ===== */
+        footer {
+            padding: 50px 5% 35px;
+            border-top: 1px solid var(--glass-border);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        footer strong { color:var(--text-pure); font-weight:700; }
+
+        /* ===== Scroll Top ===== */
+        .scroll-top {
+            position: fixed;
+            bottom: 28px; left: 28px;
+            width: 46px; height: 46px;
+            background: rgba(245,158,11,0.09);
+            border: 1px solid rgba(245,158,11,0.18);
+            border-radius: 50%;
+            display: flex; justify-content:center; align-items:center;
+            color: var(--text-muted);
+            font-size: 1rem;
+            cursor: pointer;
+            z-index: 500;
+            opacity: 0;
+            transform: translateY(14px);
+            transition: all 0.4s var(--ease);
+            backdrop-filter: blur(10px);
+            text-decoration: none;
+        }
+
+        .scroll-top.visible { opacity:1; transform:translateY(0); }
+        .scroll-top:hover { background:rgba(245,158,11,0.18); color:var(--text-pure); transform:translateY(-3px); box-shadow:0 8px 20px rgba(245,158,11,0.2); }
+
+        /* ===== Reveal ===== */
+        .reveal { opacity:0; transform:translateY(40px); transition:opacity 0.9s var(--ease),transform 0.9s var(--ease); }
+        .reveal.active { opacity:1; transform:translateY(0); }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 900px) {
+            .env-card,.env-card.reverse { flex-direction:column; text-align:center; gap:24px; padding:36px 24px; }
+            .env-content h3 { justify-content:center; }
+            .env-list li { justify-content:center; }
+            .cta-box { padding:50px 24px; }
+            .tier-perks { text-align:center; }
+            .tier-perks li { justify-content:center; }
+        }
+
+        @media (max-width: 600px) {
+            .btn-action,.btn-secondary { width:100%; justify-content:center; padding:16px 20px; font-size:1rem; }
+            header { padding:13px 20px; }
+            .logo { font-size:1.1rem; }
+            .stats-row { gap:12px; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="cyber-grid"></div>
+    <div class="core-glow"></div>
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- ===== الهيدر ===== -->
+    <header id="main-header">
+        <a href="index.html" class="logo">
+            <i class="fas fa-gem"></i> HYPER DONATE
+        </a>
+        <a href="index.html" class="btn-back">
+            العودة للمنصة <i class="fas fa-arrow-left" style="font-size:0.8rem;"></i>
+        </a>
+    </header>
+
+    <!-- ===== Hero ===== -->
+    <section class="hero reveal">
+        <div class="status-badge">
+            <span class="dot"></span> كن جزءاً من قصة نجاحنا
+        </div>
+        <h1 id="hero-title"><span class="cursor"></span></h1>
+        <p>مشروع HYPER SOURCE مجاني بالكامل. دعمك يساعدنا على تغطية تكاليف الخوادم السحابية وتطوير أدوات جديدة تخدم مجتمع تيليجرام بأعلى جودة.</p>
+        <div class="hero-btns">
+            <a href="https://t.me/Donatehyper_Bot?start=start" class="btn-action">
+                <i class="fas fa-hand-holding-dollar"></i> تبرع الآن
+            </a>
+            <a href="#tiers" class="btn-secondary">
+                <i class="fas fa-crown"></i> اعرف مزايا الدعم
+            </a>
+        </div>
+    </section>
+
+    <!-- ===== Stats Pills ===== -->
+    <div class="stats-row reveal">
+        <div class="stat-pill">
+            <i class="fas fa-wallet"></i>
+            <div>
+                <div class="val">3</div>
+                <div class="lbl">طرق دفع</div>
+            </div>
+        </div>
+        <div class="stat-pill">
+            <i class="fas fa-crown"></i>
+            <div>
+                <div class="val">VIP</div>
+                <div class="lbl">رتب حصرية</div>
+            </div>
+        </div>
+        <div class="stat-pill">
+            <i class="fas fa-shield-heart"></i>
+            <div>
+                <div class="val">100%</div>
+                <div class="lbl">شفافية تامة</div>
+            </div>
+        </div>
+        <div class="stat-pill">
+            <i class="fas fa-bolt"></i>
+            <div>
+                <div class="val">فوري</div>
+                <div class="lbl">تفعيل المزايا</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== الإمكانيات ===== -->
+    <section class="capabilities" id="capabilities">
+        <div class="section-title reveal">
+            <h2>طرق دعم مرنة وشفافة</h2>
+            <p>خيارات متعددة لتسهيل مساهمتك في بناء المشروع</p>
+        </div>
+
+        <div class="grid-container">
+            <div class="feature-card reveal">
+                <div class="card-badge">CRYPTO</div>
+                <div class="icon-wrapper"><i class="fas fa-wallet"></i></div>
+                <h3>طرق دفع متعددة</h3>
+                <p>يمكنك التبرع بعملة TON الرقمية، USDT، أو نجوم تيليجرام (Telegram Stars) بكل سهولة ويسر.</p>
+            </div>
+
+            <div class="feature-card reveal" style="transition-delay:0.1s;">
+                <div class="card-badge">REWARD</div>
+                <div class="icon-wrapper"><i class="fas fa-crown"></i></div>
+                <h3>رتب وشارات حصرية</h3>
+                <p>كل المتبرعين يحصلون على رتب VIP وشارات خاصة داخل بوتاتنا ومجموعاتنا الرسمية تقديراً لدعمهم.</p>
+            </div>
+
+            <div class="feature-card reveal" style="transition-delay:0.2s;">
+                <div class="card-badge">SECURE</div>
+                <div class="icon-wrapper"><i class="fas fa-shield-heart"></i></div>
+                <h3>شفافية وأمان تام</h3>
+                <p>جميع المعاملات مشفرة وآمنة. نضمن توجيه كافة التبرعات لتطوير الخوادم وموارد التطوير.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== فئات التبرع (جديد) ===== -->
+    <section class="tiers-section reveal" id="tiers">
+        <div class="section-title">
+            <h2>اختر مستوى دعمك</h2>
+            <p>كل مستوى يفتح مزايا حصرية جديدة لك في مجتمعنا</p>
+        </div>
+
+        <div class="tiers-grid">
+            <!-- Bronze -->
+            <div class="tier-card reveal">
+                <div class="tier-icon">🥉</div>
+                <div class="tier-name">مؤيد</div>
+                <div class="tier-amount">1 <span>TON</span></div>
+                <ul class="tier-perks">
+                    <li class="highlight"><i class="fas fa-check-circle"></i> شارة داعم في البوتات</li>
+                    <li><i class="fas fa-check-circle"></i> شكر شخصي من الفريق</li>
+                    <li><i class="fas fa-check-circle"></i> أولوية في الدعم الفني</li>
+                </ul>
+            </div>
+
+            <!-- Silver - featured -->
+            <div class="tier-card featured reveal" style="transition-delay:0.1s;">
+                <div class="tier-icon">🥈</div>
+                <div class="tier-name">VIP</div>
+                <div class="tier-amount">5 <span>TON</span></div>
+                <ul class="tier-perks">
+                    <li class="highlight"><i class="fas fa-check-circle"></i> رتبة VIP الحصرية</li>
+                    <li class="highlight"><i class="fas fa-check-circle"></i> وصول مبكر للتحديثات</li>
+                    <li><i class="fas fa-check-circle"></i> كل مزايا مستوى المؤيد</li>
+                    <li><i class="fas fa-check-circle"></i> ذكر في قناة التحديثات</li>
+                </ul>
+            </div>
+
+            <!-- Gold -->
+            <div class="tier-card reveal" style="transition-delay:0.2s;">
+                <div class="tier-icon">🏆</div>
+                <div class="tier-name">داعم ذهبي</div>
+                <div class="tier-amount">15 <span>TON</span></div>
+                <ul class="tier-perks">
+                    <li class="highlight"><i class="fas fa-check-circle"></i> شارة ذهبية حصرية</li>
+                    <li class="highlight"><i class="fas fa-check-circle"></i> طلب ميزات مخصصة</li>
+                    <li class="highlight"><i class="fas fa-check-circle"></i> دعم VIP مباشر</li>
+                    <li><i class="fas fa-check-circle"></i> كل مزايا مستوى VIP</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== لماذا نتلقى التبرعات؟ ===== -->
+    <section class="environments">
+        <div class="section-title reveal">
+            <h2>استثمار في الجودة</h2>
+        </div>
+
+        <div class="env-card reveal">
+            <i class="fas fa-server env-icon"></i>
+            <div class="env-content">
+                <h3>
+                    <i class="fas fa-microchip" style="color:var(--primary-gold);font-size:1.4rem;"></i>
+                    الحفاظ على المجانية
+                </h3>
+                <p>لكي تظل خدماتنا قوية ومجانية للجميع، نحتاج لموارد هائلة تضمن عمل البوتات باستمرار.</p>
+                <ul class="env-list">
+                    <li><i class="fas fa-check-circle"></i> تكاليف الخوادم السحابية شهرياً.</li>
+                    <li><i class="fas fa-check-circle"></i> استضافة قواعد البيانات وحمايتها.</li>
+                    <li><i class="fas fa-check-circle"></i> ضمان عمل البوتات 24/7 بدون أعطال.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="env-card reverse reveal">
+            <i class="fas fa-star env-icon"></i>
+            <div class="env-content">
+                <h3>
+                    <i class="fas fa-gift" style="color:var(--primary-gold);font-size:1.4rem;"></i>
+                    أولوية حصرية للداعمين
+                </h3>
+                <p>الداعمون هم حجر الأساس في مجتمعنا، ونسعى دائماً لرد الجميل لهم بأفضل الطرق.</p>
+                <ul class="env-list">
+                    <li><i class="fas fa-check-circle"></i> أولوية قصوى في الرد على الاستفسارات.</li>
+                    <li><i class="fas fa-check-circle"></i> وصول مبكر (Early Access) لكل تحديث.</li>
+                    <li><i class="fas fa-check-circle"></i> إمكانية طلب ميزات برمجية مخصصة.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="cta-section reveal">
+        <div class="cta-box">
+            <h2>كن جزءاً من المشروع 🏆</h2>
+            <p>دعمك — مهما كان حجمه — يصنع فرقاً حقيقياً في استمرار وتطوير المشروع للجميع.</p>
+            <a href="https://t.me/Donatehyper_Bot?start=start" class="btn-action" style="display:inline-flex;">
+                <i class="fas fa-hand-holding-dollar"></i> تبرع الآن
+            </a>
+        </div>
+    </section>
+
+    <!-- ===== Footer ===== -->
+    <footer>
+        <p>&copy; 2026 تم التصميم والتطوير بواسطة <strong>HYPER SOURCE</strong>. جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <!-- ===== زر رجوع لأعلى ===== -->
+    <a href="#" class="scroll-top" id="scroll-top" aria-label="رجوع للأعلى">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- ===== Scripts ===== -->
+    <script>
+    // ===== 1. Particles ذهبية =====
+    (function () {
+        const canvas = document.getElementById('particles-canvas');
+        const ctx    = canvas.getContext('2d');
+        let stars    = [];
+
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+
+        function init() {
+            stars = Array.from({ length: 90 }, () => ({
+                x:     Math.random() * canvas.width,
+                y:     Math.random() * canvas.height,
+                r:     Math.random() * 1.1 + 0.2,
+                alpha: Math.random() * 0.35 + 0.05,
+                speed: Math.random() * 0.25 + 0.03,
+                dir:   Math.random() * Math.PI * 2,
+                gold:  Math.random() > 0.5   // 50% ذهبية
+            }));
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                ctx.fillStyle = s.gold
+                    ? `rgba(245,158,11,${s.alpha})`
+                    : `rgba(255,255,255,${s.alpha * 0.6})`;
+                ctx.fill();
+                s.x += Math.cos(s.dir) * s.speed;
+                s.y += Math.sin(s.dir) * s.speed;
+                if (s.x < 0) s.x = canvas.width;
+                if (s.x > canvas.width) s.x = 0;
+                if (s.y < 0) s.y = canvas.height;
+                if (s.y > canvas.height) s.y = 0;
+            });
+            requestAnimationFrame(draw);
+        }
+
+        resize(); init(); draw();
+        window.addEventListener('resize', () => { resize(); init(); });
+    })();
+
+    // ===== 2. Typing Effect =====
+    (function () {
+        const el   = document.getElementById('hero-title');
+        const text = 'ادعم استمرارية التطوير';
+        let i = 0;
+
+        function type() {
+            if (i <= text.length) {
+                el.innerHTML = text.slice(0, i) + '<span class="cursor"></span>';
+                i++;
+                setTimeout(type, i === text.length ? 0 : 80);
+            }
+        }
+
+        setTimeout(type, 700);
+    })();
+
+    // ===== 3. Header scroll + Scroll Top =====
+    const header      = document.getElementById('main-header');
+    const scrollTopBtn = document.getElementById('scroll-top');
+
+    window.addEventListener('scroll', () => {
+        const y = window.scrollY;
+        header.classList.toggle('scrolled', y > 50);
+        scrollTopBtn.classList.toggle('visible', y > 400);
+    }, { passive: true });
+
+    // ===== 4. Reveal Observer =====
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

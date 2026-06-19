@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="down.jpg">
+    <meta name="description"
+        content="HYPER DOWNLOAD - أسرع بوت تيليجرام لتحميل الفيديوهات والصوتيات من جميع منصات السوشيال ميديا بدون علامة مائية.">
+    <title>HYPER DOWNLOAD | بوت التحميل</title>
+    <!-- خط Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <!-- أيقونات FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* --- المتغيرات الأساسية (Cyber Cyan Theme - لسرعة التحميل) --- */
+        :root {
+            --bg-base: #020617;
+            /* أسود ليلي عميق */
+            --bg-surface: #0f172a;
+            --primary-cyan: #06b6d4;
+            /* سماوي ساطع */
+            --primary-glow: rgba(6, 182, 212, 0.25);
+            --glass-bg: rgba(15, 23, 42, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.06);
+            --text-pure: #ffffff;
+            --text-muted: #94a3b8;
+            --radius-xl: 32px;
+            --radius-md: 16px;
+            --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-pure);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- خلفية سايبر (Grid Background) --- */
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image:
+                linear-gradient(var(--glass-border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--glass-border) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.25;
+            z-index: -3;
+            pointer-events: none;
+            transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% {
+                transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(-200px);
+            }
+
+            100% {
+                transform: perspective(500px) rotateX(60deg) translateY(50px) translateZ(-200px);
+            }
+        }
+
+        /* إضاءة مركزية سماوية خافتة */
+        .core-glow {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80vw;
+            height: 60vh;
+            background: radial-gradient(ellipse at top, var(--primary-glow) 0%, transparent 60%);
+            z-index: -2;
+            filter: blur(100px);
+            pointer-events: none;
+        }
+
+        /* --- الهيدر (Navbar) --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 5%;
+            background: rgba(2, 6, 23, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--text-pure);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: 1px;
+        }
+
+        .logo i {
+            color: var(--primary-cyan);
+            font-size: 1.8rem;
+        }
+
+        .btn-back {
+            color: var(--text-muted);
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition-smooth);
+            font-size: 0.95rem;
+            border: 1px solid transparent;
+            padding: 8px 16px;
+            border-radius: 50px;
+        }
+
+        .btn-back:hover {
+            color: var(--text-pure);
+            gap: 12px;
+            border-color: var(--glass-border);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* --- القسم الرئيسي (Hero Section) --- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 150px 5% 80px;
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .status-badge {
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            color: #67e8f9;
+            padding: 6px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .status-badge i {
+            font-size: 0.6rem;
+            color: var(--primary-cyan);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.4;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.4;
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -2px;
+        }
+
+        .hero p {
+            font-size: clamp(1.1rem, 2vw, 1.3rem);
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            max-width: 700px;
+            line-height: 1.8;
+            font-weight: 400;
+        }
+
+        /* زر التفعيل الرئيسي */
+        .btn-action {
+            padding: 20px 50px;
+            font-size: 1.15rem;
+            font-weight: 800;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: var(--transition-smooth);
+            background: linear-gradient(135deg, var(--primary-cyan) 0%, #0891b2 100%);
+            color: white;
+            box-shadow: 0 10px 40px var(--primary-glow);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            letter-spacing: 1px;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(6, 182, 212, 0.5);
+            background: linear-gradient(135deg, #22d3ee 0%, #0e7490 100%);
+        }
+
+        /* --- قسم الإمكانيات (Capabilities Grid) --- */
+        .capabilities {
+            padding: 100px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .section-title h2 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 50px 40px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            transition: var(--transition-smooth);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--primary-cyan), transparent);
+            opacity: 0;
+            transition: 0.4s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(6, 182, 212, 0.3);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .icon-wrapper {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            background: rgba(6, 182, 212, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+            border: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .icon-wrapper i {
+            font-size: 2rem;
+            color: var(--primary-cyan);
+        }
+
+        .feature-card h3 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        /* --- قسم حصري لمميزات التحميل --- */
+        .environments {
+            padding: 80px 5% 120px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .env-card {
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.8) 0%, rgba(2, 6, 23, 0.9) 100%);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 50px;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .env-card.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .env-icon {
+            font-size: 6rem;
+            color: rgba(255, 255, 255, 0.05);
+            text-shadow: 0 0 30px var(--primary-glow);
+        }
+
+        .env-content h3 {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .env-content p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .env-list {
+            list-style: none;
+        }
+
+        .env-list li {
+            margin-bottom: 10px;
+            color: var(--text-pure);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .env-list li i {
+            color: var(--primary-cyan);
+            font-size: 0.9rem;
+        }
+
+        /* --- الفوتر --- */
+        footer {
+            padding: 60px 5% 40px;
+            border-top: 1px solid var(--glass-border);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            background: linear-gradient(to top, #000, transparent);
+        }
+
+        footer strong {
+            color: var(--text-pure);
+            font-weight: 700;
+        }
+
+        /* --- أنيميشن الظهور --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- استجابة الشاشات --- */
+        @media (max-width: 900px) {
+
+            .env-card,
+            .env-card.reverse {
+                flex-direction: column;
+                text-align: center;
+                gap: 30px;
+                padding: 40px 20px;
+            }
+
+            .env-content h3 {
+                justify-content: center;
+            }
+
+            .env-list li {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .btn-action {
+                width: 100%;
+                min-width: unset;
+                font-size: 1rem;
+                padding: 16px 20px;
+            }
+
+            header {
+                padding: 15px 20px;
+            }
+
+            .logo {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- الخلفيات -->
+    <div class="cyber-grid"></div>
+    <div class="core-glow"></div>
+
+    <!-- الهيدر -->
+    <header>
+        <a href="index.html" class="logo">
+            <i class="fas fa-cloud-arrow-down"></i> HYPER DOWNLOAD
+        </a>
+        <a href="index.html" class="btn-back">
+            المنصة <i class="fas fa-arrow-left" style="font-size: 0.8rem;"></i>
+        </a>
+    </header>
+
+    <!-- القسم الرئيسي -->
+    <section class="hero reveal">
+        <div class="status-badge">
+            <i class="fas fa-circle"></i> خوادم التحميل السريعة متصلة
+        </div>
+        <h1>حمّل الميديا بضغطة زر</h1>
+        <p>لا داعي للبحث عن مواقع التحميل المزعجة المليئة بالإعلانات. HYPER DOWNLOAD يوفر لك تحميل الفيديوهات والصوتيات
+            من جميع منصات التواصل الاجتماعي بأعلى جودة وبدون علامات مائية.</p>
+
+        <a href="https://t.me/HYYP_Bot?start=start" class="btn-action">
+            <i class="fab fa-telegram-plane"></i> حمل من البوت الآن
+        </a>
+    </section>
+
+    <!-- قسم الإمكانيات الأمنية -->
+    <section class="capabilities">
+        <div class="section-title reveal">
+            <h2>تجربة تحميل لا مثيل لها</h2>
+            <p>أدوات قوية صُممت لتمنحك المحتوى الذي تريده بسرعة وسهولة.</p>
+        </div>
+
+        <div class="grid-container">
+            <!-- كارت 1 -->
+            <div class="feature-card reveal">
+                <div class="icon-wrapper"><i class="fas fa-photo-film"></i></div>
+                <h3>دعم جميع المنصات</h3>
+                <p>يدعم التحميل المباشر من يوتيوب، تيك توك، إنستجرام (ريلز وستوريز)، فيسبوك، إكس (تويتر سابقاً)، بنترست،
+                    وغيرها الكثير.</p>
+            </div>
+
+            <!-- كارت 2 -->
+            <div class="feature-card reveal" style="transition-delay: 0.1s;">
+                <div class="icon-wrapper"><i class="fas fa-wand-magic-sparkles"></i></div>
+                <h3>بدون علامة مائية (No Watermark)</h3>
+                <p>حمل مقاطع تيك توك وإنستجرام نظيفة تماماً بدون أي حقوق أو لوجو مزعج يغطي على المحتوى.</p>
+            </div>
+
+            <!-- كارت 3 -->
+            <div class="feature-card reveal" style="transition-delay: 0.2s;">
+                <div class="icon-wrapper"><i class="fas fa-music"></i></div>
+                <h3>استخراج الصوت (MP3)</h3>
+                <p>هل أعجبتك أغنية في فيديو؟ أرسل الرابط للبوت وسيقوم باستخراج الصوت النقي لك بصيغة MP3 جاهز للتشغيل.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- قسم حصري لتنظيم المجموعات -->
+    <section class="environments">
+        <div class="section-title reveal">
+            <h2>قوة وسرعة استثنائية</h2>
+        </div>
+
+        <!-- أتمتة العقوبات -->
+        <div class="env-card reveal">
+            <i class="fas fa-bolt env-icon"></i>
+            <div class="env-content">
+                <h3><i class="fas fa-server" style="color: var(--text-silver); font-size: 1.5rem;"></i> خوادم صاروخية
+                </h3>
+                <p>تم بناء البوت على سيرفرات مخصصة لمعالجة الروابط وتحميل الملفات الضخمة في أجزاء من الثانية.</p>
+                <ul class="env-list">
+                    <li><i class="fas fa-check"></i> سرعة تحميل وإرسال لا تقارن.</li>
+                    <li><i class="fas fa-check"></i> يدعم تحميل الفيديوهات بجودة عالية 1080p و 4K.</li>
+                    <li><i class="fas fa-check"></i> يعمل بكفاءة حتى في أوقات الذروة.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- حماية الميديا -->
+        <div class="env-card reverse reveal">
+            <i class="fas fa-users env-icon"></i>
+            <div class="env-content">
+                <h3><i class="fas fa-user-group" style="color: var(--text-silver); font-size: 1.5rem;"></i> إضافة
+                    للمجموعات</h3>
+                <p>البوت ليس فقط للاستخدام الشخصي، بل يمكنك إضافته لمجموعتك ليخدم جميع الأعضاء.</p>
+                <ul class="env-list">
+                    <li><i class="fas fa-check"></i> الأعضاء يرسلون الرابط، والبوت يرد بالفيديو مباشرة بالجروب.</li>
+                    <li><i class="fas fa-check"></i> لا يحتاج إلى صلاحيات إشراف معقدة للعمل.</li>
+                    <li><i class="fas fa-check"></i> واجهة ردود أنيقة ومختصرة لتجنب الإزعاج.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer>
+        <p>&copy; 2026 تم التصميم والتطوير بواسطة <strong>HYPER SOURCE</strong>. جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <!-- سكربتات الانسيابية -->
+    <script>
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach((el) => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+
+</html>

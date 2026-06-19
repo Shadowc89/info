@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="logo.jpg">
+    <meta name="description"
+        content="HYPER SOURCE هو منصة متكاملة تضم أحدث بوتات تيليجرام الخدمية والأمنية لتطوير وإدارة مجتمعك باحترافية.">
+    <title>HYPER SOURCE | المنصة الرئيسية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* ===== المتغيرات الأساسية ===== */
+        :root {
+            --bg-base: #000000;
+            --glass-bg: rgba(15, 15, 15, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.06);
+            --text-pure: #ffffff;
+            --text-silver: #a1a1aa;
+            --radius-pill: 100px;
+            --radius-card: 24px;
+            --transition-smooth: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+            --accent-gradient: linear-gradient(135deg, #ffffff 0%, #71717a 100%);
+            --titanium-text: linear-gradient(180deg, #ffffff 0%, #a1a1aa 40%, #3f3f46 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-pure);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ===== Noise Overlay ===== */
+        .noise-overlay {
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.04;
+            z-index: 9998;
+            pointer-events: none;
+        }
+
+        /* ===== Canvas نجوم ===== */
+        #particles-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ===== الهيدر ===== */
+        header {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 92%;
+            max-width: 1200px;
+            z-index: 1000;
+            padding: 12px 24px;
+            background: rgba(10, 10, 10, 0.55);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--glass-border);
+            border-top-color: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-pill);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition-smooth);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        header.scrolled {
+            top: 12px;
+            width: 88%;
+            padding: 8px 20px;
+            background: rgba(5, 5, 5, 0.9);
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--text-pure);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 2px;
+        }
+
+        .logo i {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ===== Nav Links ===== */
+        .nav-links {
+            display: flex;
+            gap: 35px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-silver);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-pure);
+        }
+
+        /* ===== Dropdown (مُصلح بـ visibility بدل display:none) ===== */
+        .dropdown {
+            position: relative;
+            padding: 10px 0;
+        }
+
+        .dropdown-content {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 50%;
+            transform: translateX(50%) translateY(8px);
+            background: rgba(12, 12, 12, 0.97);
+            backdrop-filter: blur(25px);
+            min-width: 260px;
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9);
+            padding: 12px;
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s;
+            pointer-events: none;
+        }
+
+        .dropdown:hover .dropdown-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(50%) translateY(0);
+            pointer-events: auto;
+        }
+
+        .dropdown-content a {
+            color: var(--text-silver);
+            padding: 11px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-radius: 12px;
+            transition: all 0.25s ease;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .dropdown-content a i {
+            font-size: 1.1rem;
+            opacity: 0.7;
+        }
+
+        .dropdown-content a:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-pure);
+            padding-right: 22px;
+        }
+
+        .dropdown-content a:hover i {
+            opacity: 1;
+        }
+
+        /* ===== Header Actions ===== */
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn-small {
+            padding: 10px 24px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: var(--radius-pill);
+            text-decoration: none;
+            transition: all 0.35s ease;
+            border: 1px solid var(--glass-border);
+            color: var(--text-pure);
+        }
+
+        .btn-small:hover {
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        /* ===== Hamburger (موبايل) ===== */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 10px;
+            transition: background 0.3s;
+        }
+
+        .hamburger:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .hamburger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--text-pure);
+            border-radius: 2px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-origin: center;
+        }
+
+        .hamburger.open span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
+        .hamburger.open span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        /* ===== Mobile Menu ===== */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.97);
+            backdrop-filter: blur(40px);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .mobile-menu.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu a {
+            color: var(--text-silver);
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 700;
+            padding: 14px 40px;
+            border-radius: 16px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+            max-width: 320px;
+            justify-content: center;
+        }
+
+        .mobile-menu a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-pure);
+        }
+
+        .mobile-menu-divider {
+            width: 60px;
+            height: 1px;
+            background: var(--glass-border);
+            margin: 10px 0;
+        }
+
+        /* ===== Hero ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 180px 5% 100px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-glow {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, transparent 60%);
+            filter: blur(80px);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 8px 24px;
+            border-radius: var(--radius-pill);
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-silver);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero h1 {
+            font-size: clamp(3.5rem, 8vw, 6.5rem);
+            font-weight: 900;
+            line-height: 1.05;
+            margin-bottom: 25px;
+            letter-spacing: -2px;
+            background: var(--titanium-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: clamp(1.1rem, 2vw, 1.25rem);
+            color: var(--text-silver);
+            margin-bottom: 50px;
+            max-width: 700px;
+            font-weight: 400;
+            line-height: 1.8;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 18px 45px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            border-radius: var(--radius-pill);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-main {
+            background: #ffffff;
+            color: #000000;
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15), inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-main:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(255, 255, 255, 0.25);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-silver);
+            font-size: 1.4rem;
+            animation: bounce 2.5s infinite;
+            opacity: 0.45;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0) translateX(-50%);
+            }
+
+            40% {
+                transform: translateY(-14px) translateX(-50%);
+            }
+
+            60% {
+                transform: translateY(-6px) translateX(-50%);
+            }
+        }
+
+        /* ===== قسم الإحصائيات (جديد) ===== */
+        .stats-section {
+            padding: 60px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-card {
+            background: rgba(15, 15, 15, 0.5);
+            border: 1px solid var(--glass-border);
+            border-top-color: rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-card);
+            padding: 30px 20px;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            transition: transform 0.4s ease, border-color 0.4s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .stat-number {
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: var(--titanium-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: var(--text-silver);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* ===== Showcase ===== */
+        .showcase-wrapper {
+            position: relative;
+            padding: 60px 0;
+            z-index: 1;
+        }
+
+        .showcase-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 60px;
+            padding: 110px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .showcase-section.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .bg-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 13vw;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.018);
+            z-index: -1;
+            pointer-events: none;
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        /* الإضاءات */
+        .glow-protect {
+            position: absolute;
+            width: 40vw;
+            height: 40vw;
+            background: radial-gradient(circle, rgba(239, 68, 68, 0.09) 0%, transparent 60%);
+            filter: blur(90px);
+            z-index: -1;
+            left: 0;
+        }
+
+        .glow-connect {
+            position: absolute;
+            width: 40vw;
+            height: 40vw;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.09) 0%, transparent 60%);
+            filter: blur(90px);
+            z-index: -1;
+            right: 0;
+        }
+
+        .glow-ban {
+            position: absolute;
+            width: 40vw;
+            height: 40vw;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.09) 0%, transparent 60%);
+            filter: blur(90px);
+            z-index: -1;
+            left: 0;
+        }
+
+        .glow-download {
+            position: absolute;
+            width: 40vw;
+            height: 40vw;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.09) 0%, transparent 60%);
+            filter: blur(90px);
+            z-index: -1;
+            right: 0;
+        }
+
+        .glow-donate {
+            position: absolute;
+            width: 40vw;
+            height: 40vw;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.09) 0%, transparent 60%);
+            filter: blur(90px);
+            z-index: -1;
+            left: 0;
+        }
+
+        .showcase-content {
+            flex: 1;
+            z-index: 2;
+        }
+
+        .showcase-content h2 {
+            font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+            font-weight: 900;
+            margin-bottom: 18px;
+            line-height: 1.1;
+        }
+
+        .showcase-content p {
+            color: var(--text-silver);
+            font-size: 1.1rem;
+            margin-bottom: 28px;
+            line-height: 1.85;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-bottom: 38px;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 13px;
+            color: var(--text-pure);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .feature-list li i {
+            color: #a1a1aa;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 9px;
+            border-radius: 50%;
+            min-width: 36px;
+            text-align: center;
+        }
+
+        .showcase-visual {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .glass-mockup {
+            width: 100%;
+            max-width: 420px;
+            aspect-ratio: 1;
+            background: linear-gradient(145deg, rgba(20, 20, 20, 0.65) 0%, rgba(5, 5, 5, 0.85) 100%);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease;
+        }
+
+        /* تأثير الضوء الداخلي عند hover */
+        .glass-mockup::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.04) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .glass-mockup:hover::before {
+            opacity: 1;
+        }
+
+        .glass-mockup:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 60px 100px rgba(0, 0, 0, 0.7);
+        }
+
+        .glass-mockup i {
+            font-size: 7.5rem;
+            filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.5));
+            transition: transform 0.5s ease;
+        }
+
+        .glass-mockup:hover i {
+            transform: scale(1.1) rotate(-3deg);
+        }
+
+        /* ===== Footer ===== */
+        footer {
+            padding: 80px 5% 40px;
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 35px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .footer-links-row {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-links-row a {
+            color: var(--text-silver);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .footer-links-row a:hover {
+            color: var(--text-pure);
+        }
+
+        .footer-copy {
+            color: rgba(255, 255, 255, 0.25);
+            font-size: 0.88rem;
+        }
+
+        /* ===== Scroll To Top (جديد) ===== */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 46px;
+            height: 46px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-silver);
+            font-size: 1rem;
+            cursor: pointer;
+            z-index: 500;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            text-decoration: none;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-top:hover {
+            background: rgba(255, 255, 255, 0.14);
+            color: var(--text-pure);
+            transform: translateY(-3px);
+        }
+
+        /* ===== Reveal Animation ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 992px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .stats-section {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .showcase-section,
+            .showcase-section.reverse {
+                flex-direction: column;
+                text-align: center;
+                padding: 80px 5%;
+                gap: 40px;
+            }
+
+            .feature-list li {
+                justify-content: center;
+            }
+
+            .bg-text {
+                font-size: 22vw;
+            }
+        }
+
+        @media (max-width: 600px) {
+            header {
+                width: 95%;
+                padding: 10px 15px;
+            }
+
+            .glass-mockup {
+                border-radius: 28px;
+            }
+
+            .glass-mockup i {
+                font-size: 5.5rem;
+            }
+
+            .stats-section {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 14px;
+            }
+
+            .stat-number {
+                font-size: 2.2rem;
+            }
+
+            .btn {
+                padding: 15px 30px;
+                font-size: 1rem;
+            }
+
+            .scroll-top {
+                bottom: 20px;
+                left: 20px;
+            }
+        }
+        .system-status{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:0.85rem;
+    color:#fff;
+    margin-right:15px;
+}
+
+.status-dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#00ff88;
+    box-shadow:0 0 10px #00ff88;
+}
+    </style>
+</head>
+
+<body>
+
+    <div class="noise-overlay"></div>
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- ===== الهيدر ===== -->
+    <header id="main-header">
+        <a href="#" class="logo"><i class="fas fa-code"></i>SOURCE HYPER</a>
+
+        <div class="nav-links">
+            <a href="#info">Main Page</a>
+
+            <div class="dropdown">
+                <a href="#showcase" class="dropbtn">
+                    Source Hyper Bots <i class="fas fa-chevron-down" style="font-size:0.7rem; margin-right:5px;"></i>
+                </a>
+                <div class="dropdown-content">
+                    <a href="protect-bot.html"><i class="fas fa-shield-halved"></i> Hyper Help</a>
+                    <a href="connect-bot.html"><i class="fas fa-headset"></i> Hyper Support</a>
+                    <a href="ban-bot.html"><i class="fas fa-gavel"></i> Hyper Ban</a>
+                    <a href="download-bot.html"><i class="fas fa-cloud-arrow-down"></i> Hyper Downloader</a>
+                    <a href="donate-bot.html"><i class="fas fa-gem"></i> Hyper Donate</a>
+                </div>
+            </div>
+
+            <a href="https://t.me/Source_Hyper">Update Channel</a>
+        </div>
+
+        <div class="header-actions">
+            <a href="https://t.me/Hyperssup_Bot?start=start" class="btn-small">Support Us</a>
+            <a href="info.html" class="btn-small" target="_blank">Who are we?</a>
+            <!-- زر الهامبرجر -->
+            <div class="hamburger" id="hamburger" aria-label="فتح القائمة" role="button" tabindex="0">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== Mobile Menu ===== -->
+    <nav class="mobile-menu" id="mobile-menu" aria-hidden="true">
+        <a href="#home" class="mobile-link"><i class="fas fa-house"></i> Main Page</a>
+        <div class="mobile-menu-divider"></div>
+        <a href="protect-bot.html" class="mobile-link"><i class="fas fa-shield-halved" style="color:#f87171;"></i> Hyper
+            Help</a>
+        <a href="connect-bot.html" class="mobile-link"><i class="fas fa-headset" style="color:#60a5fa;"></i> Hyper
+            Support</a>
+        <a href="ban-bot.html" class="mobile-link"><i class="fas fa-gavel" style="color:#c084fc;"></i> Hyper Ban</a>
+        <a href="download-bot.html" class="mobile-link"><i class="fas fa-cloud-arrow-down" style="color:#22d3ee;"></i>
+            Hyper Downloader</a>
+        <a href="donate-bot.html" class="mobile-link"><i class="fas fa-gem" style="color:#fbbf24;"></i> Hyper Donate</a>
+        <div class="mobile-menu-divider"></div>
+        <a href="https://t.me/Source_Hyper" class="mobile-link"><i class="fab fa-telegram"></i> Update Channel</a>
+        <a href="https://t.me/Hyperssup_Bot?start=start" class="mobile-link"><i class="fas fa-headset"></i> Hyper
+            Support</a>
+    </nav>
+
+    <!-- ===== Hero ===== -->
+
+    <section class="hero reveal" id="home">
+        <div class="hero-glow"></div>
+        <div class="hero-badge">The Best Source On <span>Telegram</span></div>
+        <h1>Your Digital Future<br>Under Control</h1>
+        <p>HYPER SOURCE platform provides you with a powerful collection of advanced systems and bots designed
+            specifically to secure, manage, and grow your Telegram community with absolute professionalism.</p>
+        <div class="btn-group">
+            <a href="#showcase" class="btn btn-main"><i class="fas fa-layer-group"></i> Explore Bot Library</a>
+            <a href="https://t.me/Source_Hyper" class="btn btn-outline"><i class="fab fa-telegram"></i> Join Official
+                Channel</a>
+        </div>
+        <div class="scroll-indicator"><i class="fas fa-arrow-down"></i></div>
+    </section>
+
+    <!-- ===== الإحصائيات (جديد) ===== -->
+
+    <div class="stats-section reveal">
+        <div class="stat-card">
+            <div class="stat-number" data-target="5">0</div>
+            <div class="stat-label">Integrated Bots</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" data-target="10000" data-suffix="+">0</div>
+            <div class="stat-label">Active Users</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" data-target="99" data-suffix="%">0</div>
+            <div class="stat-label">Uptime</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" data-target="24" data-suffix="/7">0</div>
+            <div class="stat-label">Technical Support</div>
+        </div>
+    </div>
+
+    <!-- ===== Showcase ===== -->
+    <div class="showcase-wrapper" id="showcase">
+
+        <!-- 1. Protection -->
+        <section class="showcase-section reveal">
+            <div class="bg-text">PROTECT</div>
+            <div class="glow-protect"></div>
+            <div class="showcase-content">
+                <span class="hero-badge"
+                    style="display:inline-block;margin-bottom:15px;border-color:rgba(255, 0, 0, 0.3);color:#fca5a5;">
+                    Group Protection Bot
+                </span>
+
+                <h2>The Security Shield of Your Group</h2>
+
+                <p>An intelligent system working silently to protect your groups. It detects members and bans violators
+                    instantly, with forced subscription gateways to secure your conversations.</p>
+
+                <ul class="feature-list">
+                    <li><i class="fas fa-bolt"></i> Response and ban in under a second.</li>
+                    <li><i class="fas fa-fingerprint"></i> Zero-Trust subscription gateways.</li>
+                    <li><i class="fas fa-eye-slash"></i> Automatic fake account filtering.</li>
+                </ul>
+
+                <a href="hyper-help.html" class="btn btn-main">Open Bot Page <i class="fas fa-arrow-left"></i></a>
+            </div>
+
+            <div class="showcase-visual reveal">
+                <div class="glass-mockup">
+                    <i class="fas fa-shield-halved"
+                        style="background:linear-gradient(135deg,#ef4444,#f87171);-webkit-background-clip:text;-webkit-text-fill-color:transparent;"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Connect -->
+        <section class="showcase-section reverse reveal">
+            <div class="bg-text">CONNECT</div>
+            <div class="glow-connect"></div>
+            <div class="showcase-content">
+                <span class="hero-badge"
+                    style="display:inline-block;margin-bottom:15px;border-color:rgba(59,130,246,0.3);color:#93c5fd;">
+                    Communication Bot
+                </span>
+
+                <h2>Smart Message Management</h2>
+
+                <p>Engage with your followers and clients professionally. The bot receives messages, organizes them, and
+                    allows your support team to respond privately and efficiently.</p>
+
+                <ul class="feature-list">
+                    <li><i class="fas fa-users-gear"></i> Add multiple admin responders.</li>
+                    <li><i class="fas fa-reply-all"></i> Predefined quick replies.</li>
+                    <li><i class="fas fa-user-secret"></i> Full sender privacy protection.</li>
+                </ul>
+
+                <a href="connect-bot.html" class="btn btn-main">Open Bot Page <i class="fas fa-arrow-left"></i></a>
+            </div>
+
+            <div class="showcase-visual reveal">
+                <div class="glass-mockup">
+                    <i class="fa-solid fa-headset"
+                        style="background:linear-gradient(135deg,#3b82f6,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Ban -->
+        <section class="showcase-section reveal">
+            <div class="bg-text">BAN</div>
+            <div class="glow-ban"></div>
+            <div class="showcase-content">
+                <span class="hero-badge"
+                    style="display:inline-block;margin-bottom:15px;border-color:rgba(85, 247, 139, 0.3);color:#b4fec5;">
+                    Ban Bot
+                </span>
+
+                <h2>Total Control</h2>
+                <p>The strict judge of your groups. It blocks spam and links, and provides mute and ban options to
+                    punish disruptive users intelligently.</p>
+
+                <ul class="feature-list">
+                    <li><i class="fas fa-link-slash"></i> Automatic spam and link filtering.</li>
+                    <li><i class="fas fa-comment-slash"></i> Timed mute system.</li>
+                    <li><i class="fas fa-globe"></i> Global ban across linked groups.</li>
+                </ul>
+
+                <a href="ban-bot.html" class="btn btn-main">Open Bot Page <i class="fas fa-arrow-left"></i></a>
+            </div>
+
+            <div class="showcase-visual reveal">
+                <div class="glass-mockup">
+                    <i class="fas fa-ban"
+                        style="background:linear-gradient(135deg,#55f760,#84fca0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Download -->
+        <section class="showcase-section reverse reveal">
+            <div class="bg-text">DOWNLOADER</div>
+            <div class="glow-download"></div>
+            <div class="showcase-content">
+                <span class="hero-badge"
+                    style="display:inline-block;margin-bottom:15px;border-color:rgba(6,182,212,0.3);color:#67e8f9;">
+                    Hyper Downloader Bot
+                </span>
+
+                <h2>Download Media in One Click</h2>
+
+                <p>Download videos and audio from all social media platforms in the highest quality without watermarks.
+                </p>
+
+                <ul class="feature-list">
+                    <li><i class="fas fa-photo-film"></i> Supports YouTube, TikTok, and more.</li>
+                    <li><i class="fas fa-wand-magic-sparkles"></i> Clean downloads without watermark.</li>
+                    <li><i class="fas fa-music"></i> High-quality audio extraction.</li>
+                </ul>
+
+                <a href="download-bot.html" class="btn btn-main">Open Bot Page <i class="fas fa-arrow-left"></i></a>
+            </div>
+
+            <div class="showcase-visual reveal">
+                <div class="glass-mockup">
+                    <i class="fa-solid fa-download"
+                        style="background:linear-gradient(135deg,#06b6d4,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Donate -->
+        <section class="showcase-section reveal">
+            <div class="bg-text">DONATE</div>
+            <div class="glow-donate"></div>
+            <div class="showcase-content">
+                <span class="hero-badge"
+                    style="display:inline-block;margin-bottom:15px;border-color:rgba(245,158,11,0.3);color:#fcd34d;">
+                    Donation Bot
+                </span>
+
+                <h2>Support Ongoing Development</h2>
+
+                <p>Help cover server costs and support the development of new tools for the Telegram community.</p>
+
+                <ul class="feature-list">
+                    <li><i class="fas fa-wallet"></i> Supports TON and Telegram Stars.</li>
+                    <li><i class="fas fa-crown"></i> Exclusive VIP ranks and badges for donors.</li>
+                    <li><i class="fas fa-shield-heart"></i> Fully secure and encrypted transactions.</li>
+                </ul>
+
+                <a href="donate-bot.html" class="btn btn-main">Open Bot Page <i class="fas fa-arrow-left"></i></a>
+            </div>
+
+            <div class="showcase-visual reveal">
+                <div class="glass-mockup">
+                    <i class="fa-solid fa-hand-holding-dollar"
+                        style="background:linear-gradient(135deg,#f59e0b,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;"></i>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ===== Footer ===== -->
+    <footer>
+        <div class="footer-logo">HYPER SOURCE</div>
+
+        <div class="footer-links-row">
+            <a href="https://t.me/Source_Hyper">Updates Channel</a>
+            <a href="https://t.me/Hyperssup_Bot">Support Bot</a>
+            <a href="https://t.me/eaqqs">Owner Source</a>
+        </div>
+
+        <div class="footer-copy">
+            &copy; 2025 Developed with excellence by HYPER SOURCE. All rights reserved.
+        </div>
+    </footer>
+
+
+    <!-- ===== زر رجوع لأعلى ===== -->
+
+    <a href="#home" class="scroll-top" id="scroll-top" aria-label="رجوع للأعلى">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- ===== السكربتات ===== -->
+    <script>
+        // ===== 1. Particles (نجوم خلفية) =====
+        (function () {
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+            let stars = [];
+            const COUNT = 120;
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+
+            function createStars() {
+                stars = [];
+                for (let i = 0; i < COUNT; i++) {
+                    stars.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        r: Math.random() * 1.2 + 0.2,
+                        alpha: Math.random() * 0.5 + 0.1,
+                        speed: Math.random() * 0.3 + 0.05,
+                        dir: Math.random() * Math.PI * 2
+                    });
+                }
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                stars.forEach(s => {
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
+                    ctx.fill();
+                    // حركة بطيئة
+                    s.x += Math.cos(s.dir) * s.speed;
+                    s.y += Math.sin(s.dir) * s.speed;
+                    // إعادة التوضيع
+                    if (s.x < 0) s.x = canvas.width;
+                    if (s.x > canvas.width) s.x = 0;
+                    if (s.y < 0) s.y = canvas.height;
+                    if (s.y > canvas.height) s.y = 0;
+                });
+                requestAnimationFrame(draw);
+            }
+
+            resize();
+            createStars();
+            draw();
+            window.addEventListener('resize', () => { resize(); createStars(); });
+        })();
+
+        // ===== 2. تأثير الهيدر عند الـ scroll =====
+        const header = document.getElementById('main-header');
+        const scrollTopBtn = document.getElementById('scroll-top');
+
+        window.addEventListener('scroll', () => {
+            const y = window.scrollY;
+            header.classList.toggle('scrolled', y > 50);
+            scrollTopBtn.classList.toggle('visible', y > 400);
+        }, { passive: true });
+
+        // ===== 3. Hamburger Menu =====
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        function toggleMenu() {
+            const isOpen = hamburger.classList.toggle('open');
+            mobileMenu.classList.toggle('open', isOpen);
+            mobileMenu.setAttribute('aria-hidden', !isOpen);
+            document.body.style.overflow = isOpen ? 'hidden' : '';
+        }
+
+        hamburger.addEventListener('click', toggleMenu);
+        hamburger.addEventListener('keydown', e => e.key === 'Enter' && toggleMenu());
+
+        // إغلاق عند الضغط على أي رابط في المنيو
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('open');
+                mobileMenu.classList.remove('open');
+                mobileMenu.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // ===== 4. Reveal بـ IntersectionObserver =====
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.12 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // ===== 5. عداد الإحصائيات =====
+        function animateCounter(el) {
+            const target = parseInt(el.dataset.target);
+            const suffix = el.dataset.suffix || '';
+            const duration = 1800;
+            const start = performance.now();
+
+            function update(now) {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                // easeOutExpo
+                const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+                const value = Math.floor(ease * target);
+                el.textContent = value.toLocaleString('ar') + suffix;
+                if (progress < 1) requestAnimationFrame(update);
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.querySelectorAll('.stat-number').forEach(animateCounter);
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.4 });
+
+        const statsSection = document.querySelector('.stats-section');
+        if (statsSection) statsObserver.observe(statsSection);
+    </script>
+</body>
+
+</html>
